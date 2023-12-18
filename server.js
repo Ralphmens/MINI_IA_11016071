@@ -18,8 +18,28 @@ const PatientSchema = new mongoose.Schema({
     }
 })
 
+
+const EncounterSchema = new mongoose.Schema({
+    Paitent_ID: String,
+    Date_time: Date,
+    Type_Encounter: String
+})
+
+const VitalsSchema = new mongoose.Schema({
+    Patient_ID: String,
+    Blood_Pressure: String,
+    Temperature: String,
+    Pulse: String,
+    Sp02: String,  
+})
+
+
+//models
 const Patient = mongoose.model('Patient', PatientSchema)
 app.use(express.json());
+
+const Encounter = mongoose.model('Encounter', EncounterSchema)
+
 
 
 //routes
@@ -29,12 +49,18 @@ app.post('/pateints', async(res, req) => {
         const saved_patient = await new_patient.save();
         res.json(saved_patient);
     } catch (error){
-        res.status(400).json({error: error.message})
+        res.status(400).json({error: 'Bad request Error'})
     };
 })
 
-app.post('/', (res, req) => {
-
+app.post('/enconuters', async(res, req) => {
+    try{
+        const new_encounter = new Encounter(req.body)
+        await new_encounter.save()
+    } catch (error){
+        console.error(error)
+        res.status(500).json({error: 'Internal Server Error'})
+    }
 })
 
 app.post('/', (res, req) => {

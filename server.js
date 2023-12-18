@@ -3,6 +3,9 @@ const mongoose = require('mongoose')
 const app = express()
 const {v4: uuidv4} = require
 
+mongoose.connect(mongodb:localhost:27017)
+
+
 //schema
 const PatientSchema = new mongoose.Schema({
     Paitent_ID: Number,
@@ -33,12 +36,15 @@ const VitalsSchema = new mongoose.Schema({
     Sp02: String,  
 })
 
+app.use(express.json());
+
 
 //models
 const Patient = mongoose.model('Patient', PatientSchema)
-app.use(express.json());
 
 const Encounter = mongoose.model('Encounter', EncounterSchema)
+
+const Vitals = monogoose.model('Vitals', VitalsSchema)
 
 
 
@@ -63,7 +69,14 @@ app.post('/enconuters', async(res, req) => {
     }
 })
 
-app.post('/', (res, req) => {
+app.post('/submit_Vitals', async(res, req) => {
+    try{
+        const new_patient_vitals = new Vitals(req.body)
+        await new_patient_vitals.save()
+
+    } catch (error)
+    
+    
 
 })
 
